@@ -22,12 +22,12 @@
  // 03/07/2020 - Initial Release
 
 metadata {
-	definition (name: "Octoprint Server", namespace: "karatecarter", author: "Daniel Carter", cstHandler: true) {
-		capability "Refresh"
+    definition (name: "Octoprint Server", namespace: "karatecarter", author: "Daniel Carter", cstHandler: true) {
+        capability "Refresh"
         capability "Switch"
         capability "Motion Sensor" // printing status
         capability "Temperature Measurement" // hotend temp
-		capability "Relative Humidity Measurement" // print progress
+        capability "Relative Humidity Measurement" // print progress
         
         attribute "displayStatus", "string"
         attribute "printProgress", "number"
@@ -59,23 +59,23 @@ metadata {
         command "toggleAutoOff"
         command "connect"
         command "disconnect"
-	}
+    }
 
 
-	simulator {
-		// TODO: define status and reply messages here
-	}
+    simulator {
+        // TODO: define status and reply messages here
+    }
 
-	tiles(scale: 2) {
-		standardTile("displayStatus", "device.displayStatus", width: 2, height: 2, canChangeBackground: false) {
-			state("default", label: '${currentValue}%', action: "pause", icon: "st.Office.office19", backgroundColor:"#00a0dc")
-			state("paused", label: 'Paused', action: "resume", nextState: "resuming", icon: "st.Office.office19", backgroundColor:"#00a0dc")
-			state("resuming", label: 'Resuming', icon: "st.Office.office19", backgroundColor:"#00a0dc")
-			state("offline", label: "Offline", action: "connect", icon: "st.Office.office19", nextState: "connecting", backgroundColor:"#ffffff")
-			state("connecting", label: "...", icon: "st.Office.office19", backgroundColor:"#ffffff")
+    tiles(scale: 2) {
+        standardTile("displayStatus", "device.displayStatus", width: 2, height: 2, canChangeBackground: false) {
+            state("default", label: '${currentValue}%', action: "pause", icon: "st.Office.office19", backgroundColor:"#00a0dc")
+            state("paused", label: 'Paused', action: "resume", nextState: "resuming", icon: "st.Office.office19", backgroundColor:"#00a0dc")
+            state("resuming", label: 'Resuming', icon: "st.Office.office19", backgroundColor:"#00a0dc")
+            state("offline", label: "Offline", action: "connect", icon: "st.Office.office19", nextState: "connecting", backgroundColor:"#ffffff")
+            state("connecting", label: "...", icon: "st.Office.office19", backgroundColor:"#ffffff")
             state("unavailable", label: "Unavailable", icon: "st.Office.office19", backgroundColor:"#ff0e05")
             state("idle", label: "Idle", icon: "st.Office.office19", backgroundColor:"#cccccc")
-		}
+        }
         valueTile("printTime", "device.printTime", width: 4, height: 1, inactiveLabel: false, decoration: "flat") {
             state "default", label:'Print Time: ${currentValue}'
             state "00:00:00", label:'Print Time: N/A'
@@ -101,68 +101,68 @@ metadata {
         }
         
         standardTile("heatPla", "device.heatPla", inactiveLabel: false, width: 2, height: 2) {
-			state "default", label: "PLA", action:"heatPla", icon:"st.alarm.temperature.overheat", backgroundColor:"#ff0e05"
-		}
+            state "default", label: "PLA", action:"heatPla", icon:"st.alarm.temperature.overheat", backgroundColor:"#ff0e05"
+        }
         
         standardTile("heatAbs", "device.heatAbs", inactiveLabel: false, width: 2, height: 2) {
-			state "default", label: "ABS", action:"heatAbs", icon:"st.alarm.temperature.overheat", backgroundColor:"#ff0e05"
-		}
+            state "default", label: "ABS", action:"heatAbs", icon:"st.alarm.temperature.overheat", backgroundColor:"#ff0e05"
+        }
         
         standardTile("heatOff", "device.heatOff", inactiveLabel: false, width: 2, height: 2) {
-			state "default", label: "Off", action:"heatOff", icon:"st.alarm.temperature.freeze", backgroundColor:"#cccccc"
-		}
+            state "default", label: "Off", action:"heatOff", icon:"st.alarm.temperature.freeze", backgroundColor:"#cccccc"
+        }
         
         standardTile("refresh", "device.refresh", inactiveLabel: false, decoration: "flat", width: 2, height: 2) {
-			state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
-		}
+            state "default", action:"refresh.refresh", icon:"st.secondary.refresh"
+        }
         standardTile("switch", "device.switch", width: 2, height: 2, decoration: "flat", inactiveLabel: false) {
-			state "on", label: "On", action:"off", icon:"st.switches.switch.on", backgroundColor: "#00a0dc"
+            state "on", label: "On", action:"off", icon:"st.switches.switch.on", backgroundColor: "#00a0dc"
             state "off", label: "Off", action:"on", icon:"st.switches.switch.off", backgroundColor: "#cccccc"
-		}
+        }
         
         standardTile("autoOff", "device.autoOff", width: 2, height: 2, decoration: "flat", inactiveLabel: false) {
-			state "true", label: "Auto Off", action:"toggleAutoOff", backgroundColor: "#00a0dc"
+            state "true", label: "Auto Off", action:"toggleAutoOff", backgroundColor: "#00a0dc"
             state "false", label: "Auto Off", action:"toggleAutoOff", backgroundColor: "#cccccc"
-		}
+        }
         
         standardTile("dryRun", "device.dryRunMode", width: 2, height: 2, decoration: "flat", inactiveLabel: false) {
-			state "true", label: "Dry Run", action:"dryRunOff", backgroundColor: "#00a0dc"
+            state "true", label: "Dry Run", action:"dryRunOff", backgroundColor: "#00a0dc"
             state "false", label: "Dry Run", action:"dryRunOn", backgroundColor: "#cccccc"
-		}
+        }
         
-		main "displayStatus"
-		details(["displayStatus", "printTime", "remainingTime", "hotendTemp", "hotendTempSlider", "bedTemp", "bedTempSlider", "heatPla", "heatAbs", "heatOff", "switch", "autoOff", "refresh", "dryRun"])
-	}
+        main "displayStatus"
+        details(["displayStatus", "printTime", "remainingTime", "hotendTemp", "hotendTempSlider", "bedTemp", "bedTempSlider", "heatPla", "heatAbs", "heatOff", "switch", "autoOff", "refresh", "dryRun"])
+    }
     
     preferences {
-		section("Device Settings:") {
-			input "server", "string", title:"Hosname or IP Address", description: "Host or IP Address", defaultValue: "192.168.1.187", required: true, displayDuringSetup: true
-			input "serverport", "number", title:"Port", description: "Port", defaultValue: "80", required: false, displayDuringSetup: true // removing required due to possible bug where Android app may not recognize 2 chars as a valid value
+        section("Device Settings:") {
+            input "server", "string", title:"Hosname or IP Address", description: "Host or IP Address", defaultValue: "192.168.1.187", required: true, displayDuringSetup: true
+            input "serverport", "number", title:"Port", description: "Port", defaultValue: "80", required: false, displayDuringSetup: true // removing required due to possible bug where Android app may not recognize 2 chars as a valid value
             input "apikey", "string", title:"API Key", description: "API Key", required: true, displayDuringSetup: true
         }
         section("Auto shutoff:") {
-			input "autoOffAfterFailure", "boolean", title: "Auto shutoff when print fails", defaultValue: false, required: true, displayDuringSetup: true
+            input "autoOffAfterFailure", "boolean", title: "Auto shutoff when print fails", defaultValue: false, required: true, displayDuringSetup: true
             input name: "autooff_type", type: "enum", title:"Auto off trigger", options: ["Time", "Temperature"], description: "When a print completes, wait for this condition before shutting off power", defaultValue: "Temperature", required: true, displayDuringSetup: true
-			input "autooff_delay", "number", title:"If trigger is set to Time, shutoff this many seconds after a print completes", description: "Seconds", defaultValue: "60", required: true, displayDuringSetup: true
+            input "autooff_delay", "number", title:"If trigger is set to Time, shutoff this many seconds after a print completes", description: "Seconds", defaultValue: "60", required: true, displayDuringSetup: true
             input "autooff_temp", "number", title:"If trigger is set to Temp, shutoff after printer hotend cools to this temperature after a print completes", defaultValue: "50", description: "Degrees", required: true, displayDuringSetup: true
         }
         input "sendPushNotifications", "boolean", title: "Send push notifications when print ends", defaultValue: true, required: true, displayDuringSetup: true
         input "checkForFailure", "boolean", title: "Check if print failed when complete (some plugins may cause false reporting of failures)", defaultValue: true, required: true, displayDuringSetup: true
         input "defaultDebugLevel", "number", title:"Printer debug level when dry run is turned off", defaultValue: "0", displayDuringSetup: true
-	}
+    }
 }
 
 import java.text.DecimalFormat
 
 def installed () {
-	log.debug "Device Handler installed"
+    log.debug "Device Handler installed"
      state.autoOff = false
      sendEvent(name: "autoOff", value: false, linkText: deviceName, displayed: false, isStateChange: true,)
      updated()
 }
 
 def updated () {
-	log.debug "Device Handler updated"
+    log.debug "Device Handler updated"
     
     state.tryCount = 0
     state.pending_autooff = false
@@ -175,7 +175,7 @@ def updated () {
 
 // handle commands
 def deviceNotification(String str, String descriptionText) {
-	def displayDeviceStatus = true
+    def displayDeviceStatus = true
     
     //log.debug descriptionText
     def deviceName = getLinkText(device);
@@ -237,7 +237,7 @@ def deviceNotification(String str, String descriptionText) {
     }
     
     sendEvent(name: "status", value: str, descriptionText: descriptionText, displayed: displayDeviceStatus)
-	if (str != "printing") {
+    if (str != "printing") {
     sendEvent(name: "displayStatus", value: str, linkText: deviceName, displayed: false)
     }
 }
@@ -247,7 +247,7 @@ void callbackParse(physicalgraph.device.HubResponse hubResponse) {
     //log.debug "Response: ${hubResponse}\nDescription: ${hubResponse.description}\nBody: ${hubResponse.body}"
     
     if (hubResponse.description) {
-    	parseResponse(hubResponse.description)
+        parseResponse(hubResponse.description)
     } else {
         log.error "Received an invalid response"
     }
@@ -284,21 +284,21 @@ def setToolTemp(temp)
 
 def setBedTemp(temp)
 {
-	def command = getPostCommand("/api/printer/bed", "{\"command\": \"target\", \"target\": $temp }")
+    def command = getPostCommand("/api/printer/bed", "{\"command\": \"target\", \"target\": $temp }")
     sendHubCommand(command)
     runIn(2, refresh)
 }
 
 def pause()
 {
-	def command = getPostCommand("/api/job", "{\"command\": \"pause\", \"action\": \"pause\" }")
+    def command = getPostCommand("/api/job", "{\"command\": \"pause\", \"action\": \"pause\" }")
     sendHubCommand(command)
     runIn(2, refresh)
 }
 
 def resume()
 {
-	def command = getPostCommand("/api/job", "{\"command\": \"pause\", \"action\": \"resume\" }")
+    def command = getPostCommand("/api/job", "{\"command\": \"pause\", \"action\": \"resume\" }")
     sendHubCommand(command)
     runIn(2, refresh)
 }
@@ -315,21 +315,21 @@ def printSdFile(String filePath)
 
 def printFile(String source, String filePath)
 {
-	def command = getPostCommand("/api/files/$source/$filePath", "{\"command\": \"select\", \"print\": true }")
+    def command = getPostCommand("/api/files/$source/$filePath", "{\"command\": \"select\", \"print\": true }")
     sendHubCommand(command)
     runIn(2, refresh)
 }
 
 def printSelectedFile()
 {
-	def command = getPostCommand("/api/job", "{\"command\": \"start\" }")
+    def command = getPostCommand("/api/job", "{\"command\": \"start\" }")
     sendHubCommand(command)
     runIn(2, refresh)
 }
 
 def cancel()
 {
-	def command = getPostCommand("/api/job", "{\"command\": \"cancel\" }")
+    def command = getPostCommand("/api/job", "{\"command\": \"cancel\" }")
     sendHubCommand(command)
     runIn(2, refresh)
 }
@@ -345,18 +345,18 @@ def connect() {
     state.connected = false
     sendHubCommand(command)
     sendEvent(name: "displayStatus", value: "connecting", linkText: deviceName, displayed: false)
-	runIn(2, refresh)
+    runIn(2, refresh)
 }
 
 def disconnect() {
     def command = getPostCommand("/api/connection", '{"command":"disconnect"}')
     sendHubCommand(command)
-	runIn(2, refresh)
+    runIn(2, refresh)
 }
 
 // parse events into attributes
 def parse(description) {
-	log.debug "Execute: parse"
+    log.debug "Execute: parse"
     parseResponse(description)
 }
 
@@ -416,7 +416,7 @@ def setDryRunMode() {
 
 private parseResponse(description)
 {
-	def msg = parseLanMessage(description)
+    def msg = parseLanMessage(description)
     //log.trace "HTTP Response"//: ${msg}"
     
     if (msg.status == 200) {
@@ -533,14 +533,14 @@ private parseResponse(description)
 
 // handle commands
 def refresh() {
-	log.debug "Execute: refresh"
+    log.debug "Execute: refresh"
 
-	state.tryCount = state.tryCount + 1
+    state.tryCount = state.tryCount + 1
 
-//	log.debug "state.tryCount: ${state.tryCount}"
+//    log.debug "state.tryCount: ${state.tryCount}"
     
     if (state.tryCount > 3) {
-//    	log.debug "***** OFFLINE *****"
+//        log.debug "***** OFFLINE *****"
         log.debug "No log data after ${state.tryCount - 1} refreshes"
         def deviceName = getLinkText(device);
         def descriptionText = "${deviceName} is unavailable";
@@ -548,7 +548,7 @@ def refresh() {
         deviceNotification("unavailable", descriptionText)
     }
     
-  	def command = getGetCommand("/api/job")
+      def command = getGetCommand("/api/job")
     sendHubCommand(command)
     
     command = getGetCommand("/api/printer?exclude=state,sd")
@@ -612,7 +612,7 @@ private getHostAddress() {
 
     if (!ip || !port) {
         log.warn "Server IP not defined for device: ${device.id}"
-	}
+    }
 
     return ip + ":" + port
 }

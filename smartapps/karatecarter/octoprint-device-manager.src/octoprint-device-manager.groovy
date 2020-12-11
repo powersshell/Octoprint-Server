@@ -269,8 +269,8 @@ def initialize() {
     
     printers.each { printer ->
       if (settings."powerSwitch-${printer.id}") {
-      	subscribe(settings."powerSwitch-${printer.id}", "switch", printerPowerSwitch)
-	    powerMap << [printer: printer.id, switch: settings."powerSwitch-${printer.id}".id]
+          subscribe(settings."powerSwitch-${printer.id}", "switch", printerPowerSwitch)
+        powerMap << [printer: printer.id, switch: settings."powerSwitch-${printer.id}".id]
       }
     }
     state.powerMap = powerMap
@@ -287,7 +287,7 @@ def installPrinters()
       if (!existingDev) {
         try {
           def name = dev.name
-	  log.trace "Adding $name"
+      log.trace "Adding $name"
        def physicalHubs = location.hubs.findAll { it.type == physicalgraph.device.HubType.PHYSICAL } // Ignore Virtual hubs
     def hub = physicalHubs[0]
    
